@@ -8,11 +8,32 @@ int main(int argc, char **argv)
         fprintf(stderr, "wrong number of parameters\n");
     }
 
-    int arg = atoi(argv[1]);
+    char *arg = argv[1];
     printf(".intel_syntax noprefix\n");
     printf(".global main\n");
     printf("main:\n");
-    printf("    mov rax, %d\n", arg);
+    printf("    mov rax, %1d\n", strtol(arg, &arg, 10));
+
+    while (*arg)
+    {
+        if (*arg == '+')
+        {
+            arg++;
+            printf("    add rax, %1d\n", strtol(arg, &arg, 10));
+            continue;
+        }
+
+        if (*arg == '-')
+        {
+            arg++;
+            printf("    sub rax, %1d\n", strtol(arg, &arg, 10));
+            continue;
+        }
+
+        fprintf(stderr, "unexpected operator '%c'\n", *arg);
+        return 1;
+    }
+
     printf("    ret\n");
     return 0;
 }
