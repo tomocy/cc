@@ -115,8 +115,7 @@ Node* mul() {
 
 Node* term() {
     if (tokens[pos].ty == ND_NUM) {
-        pos++;
-        return new_node_num(tokens[pos].val);
+        return new_node_num(tokens[pos++].val);
     }
     if (tokens[pos].ty == '(') {
         pos++;
@@ -132,49 +131,45 @@ Node* term() {
     fprintf(stderr, "unexpected token: %s", tokens[pos].input);
 }
 
+void gen(Node* node) {
+    if (node->ty == ND_NUM) {
+        printf("    push %d\n", node->val);
+        return;
+    }
+
+    gen(node->lhs);
+    gen(node->rhs);
+
+    printf("    pop rdi\n");
+    printf("    pop rax\n");
+
+    switch (node->ty) {
+        case '+':
+            printf("    add rax, rdi\n");
+            break;
+        case '-':
+            printf("    sub rax, rdi\n");
+            break;
+    }
+
+    printf("    push rax\n");
+}
+
 int main(int argc, char** argv) {
     if (argc != 2) {
         fprintf(stderr, "wrong number of parameters\n");
     }
 
     tokenize(argv[1]);
+    Node* node = expr();
+
     printf(".intel_syntax noprefix\n");
     printf(".global main\n");
     printf("main:\n");
 
-    if (tokens[0].ty != TK_NUM) {
-        error(0);
-    }
+    gen(node);
 
-    printf("    mov rax, %d\n", tokens[0].val);
-
-    int i = 1;
-    while (tokens[i].ty != TK_EOF) {
-        if (tokens[i].ty == '+') {
-            i++;
-            if (tokens[i].ty != TK_NUM) {
-                error(i);
-            }
-
-            printf("    add rax, %d\n", tokens[i].val);
-            i++;
-            continue;
-        }
-
-        if (tokens[i].ty == '-') {
-            i++;
-            if (tokens[i].ty != TK_NUM) {
-                error(i);
-            }
-
-            printf("    sub rax, %d\n", tokens[i].val);
-            i++;
-            continue;
-        }
-
-        error(i);
-    }
-
+    printf("    pop rax\n");
     printf("    ret\n");
     return 0;
 }
