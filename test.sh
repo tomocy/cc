@@ -20,7 +20,8 @@ assert() {
 assert 0 0
 assert 42 42
 assert 21 '5+20-4'
-assert 3 '5+7-8+1'
-assert 47 '5+6*7'
+assert 3 '5 +  7- 8+ 1'
+assert 47 '5 + 6 * 7'
 assert 3 '8-10/2'
+assert 7 '(( 3*2-4 ) / 2)*7'
 echo OK

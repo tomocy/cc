@@ -50,12 +50,18 @@ void tokenize(char* p) {
             continue;
         }
 
-        if (*p == '+' || *p == '-' || *p == '*' || *p == '/') {
-            tokens[i].ty = *p;
-            tokens[i].input = p;
-            i++;
-            p++;
-            continue;
+        switch (*p) {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '(':
+            case ')':
+                tokens[i].ty = *p;
+                tokens[i].input = p;
+                i++;
+                p++;
+                continue;
         }
 
         if (isdigit(*p)) {
