@@ -133,7 +133,7 @@ Node* assign() {
         return new_node('=', lhs, assign());
     }
     if (tokens[pos].ty != ';') {
-        fprintf(stderr, "missing ;: %s", tokens[pos].input);
+        fprintf(stderr, "missing ;: %s\n", tokens[pos].input);
         exit(1);
     }
     pos++;
