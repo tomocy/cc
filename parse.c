@@ -21,6 +21,16 @@ void tokenize(char* p) {
                     continue;
                 }
                 p--;
+            case '!':
+                p++;
+                if (*p == '=') {
+                    tokens[i].ty = TK_NEQ;
+                    tokens[i].input = p;
+                    i++;
+                    p++;
+                    continue;
+                }
+                p--;
             case '+':
             case '-':
             case '*':
@@ -68,6 +78,7 @@ Node* mul();
 Node* term();
 Node* new_node(int ty, Node* lhs, Node* rhs);
 Node* new_node_eq(Node* lhs, Node* rhs);
+Node* new_node_neq(Node* lhs, Node* rhs);
 Node* new_node_num(int val);
 Node* new_node_ident(char name);
 
@@ -109,6 +120,10 @@ Node* expr() {
     if (tokens[pos].ty == TK_EQ) {
         pos++;
         return new_node_eq(lhs, expr());
+    }
+    if (tokens[pos].ty == TK_NEQ) {
+        pos++;
+        return new_node_neq(lhs, expr());
     }
 
     return lhs;
@@ -160,6 +175,14 @@ Node* new_node(int ty, Node* lhs, Node* rhs) {
 Node* new_node_eq(Node* lhs, Node* rhs) {
     Node* node = malloc(sizeof(Node));
     node->ty = ND_EQ;
+    node->lhs = lhs;
+    node->rhs = rhs;
+    return node;
+}
+
+Node* new_node_neq(Node* lhs, Node* rhs) {
+    Node* node = malloc(sizeof(Node));
+    node->ty = ND_NEQ;
     node->lhs = lhs;
     node->rhs = rhs;
     return node;

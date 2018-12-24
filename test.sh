@@ -30,4 +30,6 @@ assert 6 'a = b = 5; b + 1;'
 assert 7 'a = 2; b = (7 * 8 - 9); (a + b) / 7;'
 assert 1 '(10 / 2) == 5;'
 assert 0 '5 == 2;'
+assert 1 '3 != (7-1);'
+assert 0 '(0/3) != 0;'
 echo OK
