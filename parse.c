@@ -42,8 +42,7 @@ void tokenize(char* p) {
             continue;
         }
 
-        fprintf(stderr, "faild to tokenize: %s\n", p);
-        exit(1);
+        error("faild to tokenize: %s\n", p);
     }
 
     tokens[i].ty = TK_EOF;
@@ -81,8 +80,7 @@ Node* assign() {
         return new_node('=', lhs, assign());
     }
     if (tokens[pos].ty != ';') {
-        fprintf(stderr, "missing ;: %s\n", tokens[pos].input);
-        exit(1);
+        error("missing ;: %s\n", tokens[pos].input);
     }
     pos++;
     return lhs;
@@ -127,14 +125,13 @@ Node* term() {
         pos++;
         Node* node = expr();
         if (tokens[pos].ty != ')') {
-            fprintf(stderr, "missing ): %s", tokens[pos].input);
-            exit(1);
+            error("missing ): %s", tokens[pos].input);
         }
         pos++;
         return node;
     }
 
-    fprintf(stderr, "unexpected token: %s", tokens[pos].input);
+    error("unexpected token: %s", tokens[pos].input);
     exit(1);
 }
 

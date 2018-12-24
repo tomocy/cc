@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     if (argc != 2) {
-        fprintf(stderr, "wrong number of parameters\n");
+        error("wrong number of parameters\n");
     }
 
     tokenize(argv[1]);

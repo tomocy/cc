@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,3 +38,5 @@ void program();
 extern Node* code[100];
 
 void gen(Node* node);
+
+void error(const char* format, ...);

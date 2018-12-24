@@ -59,5 +59,5 @@ void gen_lval(Node* node) {
         return;
     }
 
-    fprintf(stderr, "lvalue is not variable");
+    error("lvalue is not variable\n");
 }
