@@ -11,13 +11,22 @@ void tokenize(char* p) {
         }
 
         switch (*p) {
+            case '=':
+                p++;
+                if (*p == '=') {
+                    tokens[i].ty = TK_EQ;
+                    tokens[i].input = p;
+                    i++;
+                    p++;
+                    continue;
+                }
+                p--;
             case '+':
             case '-':
             case '*':
             case '/':
             case '(':
             case ')':
-            case '=':
             case ';':
                 tokens[i].ty = *p;
                 tokens[i].input = p;
@@ -58,6 +67,7 @@ Node* expr();
 Node* mul();
 Node* term();
 Node* new_node(int ty, Node* lhs, Node* rhs);
+Node* new_node_eq(Node* lhs, Node* rhs);
 Node* new_node_num(int val);
 Node* new_node_ident(char name);
 
@@ -95,6 +105,10 @@ Node* expr() {
     if (tokens[pos].ty == '-') {
         pos++;
         return new_node('-', lhs, expr());
+    }
+    if (tokens[pos].ty == TK_EQ) {
+        pos++;
+        return new_node_eq(lhs, expr());
     }
 
     return lhs;
@@ -138,6 +152,14 @@ Node* term() {
 Node* new_node(int ty, Node* lhs, Node* rhs) {
     Node* node = malloc(sizeof(Node));
     node->ty = ty;
+    node->lhs = lhs;
+    node->rhs = rhs;
+    return node;
+}
+
+Node* new_node_eq(Node* lhs, Node* rhs) {
+    Node* node = malloc(sizeof(Node));
+    node->ty = ND_EQ;
     node->lhs = lhs;
     node->rhs = rhs;
     return node;
