@@ -1,27 +1,5 @@
 #include "cc.h"
 
-Node* new_node(int ty, Node* lhs, Node* rhs) {
-    Node* node = malloc(sizeof(Node));
-    node->ty = ty;
-    node->lhs = lhs;
-    node->rhs = rhs;
-    return node;
-}
-
-Node* new_node_num(int val) {
-    Node* node = malloc(sizeof(Node));
-    node->ty = ND_NUM;
-    node->val = val;
-    return node;
-}
-
-Node* new_node_ident(char name) {
-    Node* node = malloc(sizeof(Node));
-    node->ty = ND_IDENT;
-    node->name = name;
-    return node;
-}
-
 Token tokens[100];
 
 void tokenize(char* p) {
@@ -80,6 +58,9 @@ Node* assign();
 Node* expr();
 Node* mul();
 Node* term();
+Node* new_node(int ty, Node* lhs, Node* rhs);
+Node* new_node_num(int val);
+Node* new_node_ident(char name);
 
 void program() {
     int i;
@@ -155,4 +136,26 @@ Node* term() {
 
     fprintf(stderr, "unexpected token: %s", tokens[pos].input);
     exit(1);
+}
+
+Node* new_node(int ty, Node* lhs, Node* rhs) {
+    Node* node = malloc(sizeof(Node));
+    node->ty = ty;
+    node->lhs = lhs;
+    node->rhs = rhs;
+    return node;
+}
+
+Node* new_node_num(int val) {
+    Node* node = malloc(sizeof(Node));
+    node->ty = ND_NUM;
+    node->val = val;
+    return node;
+}
+
+Node* new_node_ident(char name) {
+    Node* node = malloc(sizeof(Node));
+    node->ty = ND_IDENT;
+    node->name = name;
+    return node;
 }
