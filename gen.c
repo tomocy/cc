@@ -1,15 +1,6 @@
 #include "cc.h"
 
-void gen_lval(Node* node) {
-    if (node->ty == ND_IDENT) {
-        printf("    mov rax, rbp\n");
-        printf("    sub rax, %d\n", ('z' - node->name + 1) * 8);
-        printf("    push rax\n");
-        return;
-    }
-
-    fprintf(stderr, "lvalue is not variable");
-}
+void gen_lval(Node* noce);
 
 void gen(Node* node) {
     if (node->ty == ND_NUM) {
@@ -58,4 +49,15 @@ void gen(Node* node) {
     }
 
     printf("    push rax\n");
+}
+
+void gen_lval(Node* node) {
+    if (node->ty == ND_IDENT) {
+        printf("    mov rax, rbp\n");
+        printf("    sub rax, %d\n", ('z' - node->name + 1) * 8);
+        printf("    push rax\n");
+        return;
+    }
+
+    fprintf(stderr, "lvalue is not variable");
 }
