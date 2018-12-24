@@ -4,7 +4,6 @@ assert() {
     expected="$1"
     input="$2"
 
-    gcc -o cc cc.c
     ./cc "$input" > tmp.s
     gcc -o tmp tmp.s
     ./tmp
