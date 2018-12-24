@@ -115,10 +115,10 @@ Node* mul() {
 }
 
 Node* term() {
-    if (tokens[pos].ty == ND_NUM) {
+    if (tokens[pos].ty == TK_NUM) {
         return new_node_num(tokens[pos++].val);
     }
-    if (tokens[pos].ty == ND_IDENT) {
+    if (tokens[pos].ty == TK_IDENT) {
         return new_node_ident(*(tokens[pos++].input));
     }
     if (tokens[pos].ty == '(') {
